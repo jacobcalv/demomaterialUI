@@ -9,6 +9,7 @@ function Profile(props) {
     console.log(userToken)
     const user = getUser(userToken)
     console.log(user)
+    console.log(props)
     return (
         <div>
         </div>

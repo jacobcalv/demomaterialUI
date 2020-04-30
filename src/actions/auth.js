@@ -56,6 +56,18 @@ export const registerUser = (userData) => dispatch => {
     );
 };
 
+export const addData = (userData) => dispatch => {
+  dispatch({ type: REGISTER_REQUEST });
+
+  if(userData){
+    dispatch({ type: REGISTER_SUCCESS, payload: userData });
+  } else{
+    dispatch({
+      type: REGISTER_FAILURE
+    })
+  }
+};
+
 export const GET_USER_REQUEST = "GET_USER_REQUEST";
 export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const GET_USER_FAILURE = "GET_USER_FAILURE";
