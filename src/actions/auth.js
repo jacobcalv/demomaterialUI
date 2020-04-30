@@ -58,9 +58,10 @@ export const registerUser = (userData) => dispatch => {
 
 export const addData = (userData) => dispatch => {
   dispatch({ type: REGISTER_REQUEST });
-
+  console.log(userData)
   if(userData){
-    dispatch({ type: REGISTER_SUCCESS, payload: userData });
+    dispatch({ type: REGISTER_SUCCESS, payload: {data: userData} });
+    dispatch(push("/education"))
   } else{
     dispatch({
       type: REGISTER_FAILURE

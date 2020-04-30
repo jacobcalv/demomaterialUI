@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Link, Redirect} from "react-router-dom"
-
+import submitHandler from "./resumeUtils/submitHandler"
+import {formState} from "./resumeUtils/state"
 import {
     Avatar,
     Button,
@@ -16,6 +17,8 @@ import {
 import DescriptionIcon from '@material-ui/icons/Description'
 import { blue } from '@material-ui/core/colors';
 import { push } from 'connected-react-router';
+import { connect } from "react-redux";
+import {addData} from "../actions"
 
 
 
@@ -70,14 +73,27 @@ const useStyles = makeStyles((theme) => ({
 
 function GeneralInfo(props) {
     const classes = useStyles();
-    const {handleChange, submitHandler, history} = props
     console.log(props)
-
     const pusherFunction = (event) => {
         event.preventDefault();
         console.log(event.onClick, "clicked the button")
-        push("/form/education")
+        props.history.push("/form/education")
     }
+
+    const [formData, setFormData] = useState({
+        ...formState.general
+    })
+    const handlerChange = event => {
+        event.preventDefault();
+        setFormData({ ...formData, [event.target.name]: event.target.value });
+        console.log(formData)
+      };
+    const submitIt = event => {
+        event.preventDefault();
+        props.addData(formData);
+        console.log(formData)
+    }
+
     return (
         <Grid container componet ="main" className={classes.root}>
             <CssBaseline/>
@@ -95,7 +111,7 @@ function GeneralInfo(props) {
                 </Grid>
                 <Grid item xs={12} sm={8} md={9} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
-                        <form className={classes.form} onSubmit={submitHandler}>
+                        <form className={classes.form} onSubmit={submitIt}>
                             <TextField
                                 className={classes.textField}
                                 variant="outlined"
@@ -106,7 +122,7 @@ function GeneralInfo(props) {
                                 label="First Name"
                                 name="firstName"
                                 autoFocus
-                                // onChange={handlerChange}
+                                onChange={handlerChange}
                             />
                             <TextField
                                 variant="outlined"
@@ -116,7 +132,7 @@ function GeneralInfo(props) {
                                 name="lastName"
                                 label="Last Name"
                                 id="lastName"
-                                // onChange={handlerChange}
+                                onChange={handlerChange}
                             />
                             <TextField
                                 variant="outlined"
@@ -126,6 +142,7 @@ function GeneralInfo(props) {
                                 name="email"
                                 label="Email"
                                 id="email"
+                                onChange={handlerChange}
                             />
                             <Button
                                 type="submit"
@@ -133,7 +150,7 @@ function GeneralInfo(props) {
                                 variant="contained"
                                 color="primary"
                                 className={classes.submit}
-                                onClick={pusherFunction}
+                                
                             >
                                 Next
                             </Button>
@@ -152,4 +169,16 @@ function GeneralInfo(props) {
     )
 }
 
-export default GeneralInfo
+function mapStateToProps(state) {
+    return {
+        formData: state.formData,
+    };
+    }
+    
+    const mapDispatchToProps = {
+        addData
+    };
+    export default connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(GeneralInfo);

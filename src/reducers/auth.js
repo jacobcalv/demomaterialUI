@@ -6,6 +6,27 @@ const initalState = {
   errorMessage: "",
   token: "",
   user: null,
+  formData: {
+    general:{
+      firstName: "",
+      lastName: "",
+      email: ""  
+  },
+  education: {
+      type: "",
+      schoolName: "",
+      yearIn: "",
+      yearOut: "",
+      certificateName: ""
+  },
+  work: {
+      jobTitle: "",
+      companyName: "",
+      startYear: "",
+      endYear: "",
+      jobDescription: "",
+  }
+}
 };
 
 export const authReducer = (state = initalState, action) => {
@@ -36,9 +57,10 @@ export const authReducer = (state = initalState, action) => {
       };
 
     case actions.REGISTER_SUCCESS:
+      console.log(action.payload)
       return {
         ...state,
-        user: action.payload,
+        formData: action.payload,
         errorMessage: action.payload
       };
 
